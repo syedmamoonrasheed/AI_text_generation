@@ -68,6 +68,25 @@ def write_blog_post(post_name):
     
  
     return flask.jsonify({f'{post_name}': name})
+ 
+ @app.route('/write_general/<input_prompt>',methods=['POST', 'GET'])
+ def write_general(input_prompt):
+   
+    prompt = f"write_your_own_PROMPT"
+    response = openai.Completion.create( model="text-davinci-002",
+    prompt=prompt,
+    temperature=0.8,
+    max_tokens=30,
+    top_p=1,
+    frequency_penalty=0.0,
+    presence_penalty=0.0
+    )
+    model = response['choices'][0]['text']
+    model=re.sub("\\n","",model)
+    name = model
+    
+ 
+    return flask.jsonify({f'{input_prompt}': name})
 
 if __name__ == '__main__':
     app.run()
